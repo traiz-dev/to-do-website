@@ -7,7 +7,7 @@ const Home = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch(URL + "/tasks");
+      const response = await fetch(URL + "/api/tasks");
 
       if (!response.ok) {
         console.log("There was an error!");
@@ -16,7 +16,7 @@ const Home = () => {
       const data = await response.json();
       setTasks(data.tasks);
     } catch (error) {
-      console.error("There was an error! Error: " + error);
+      console.error("There was an error! Error: " + error.message);
     }
   };
 

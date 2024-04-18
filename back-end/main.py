@@ -3,7 +3,7 @@ from model import Task
 from flask import request, jsonify
 from datetime import datetime
 
-@app.route('/tasks', methods=['GET'])
+@app.route('/api/tasks', methods=['GET'])
 def get_tasks():
     try:
         tasks = Task.query.all()
@@ -16,7 +16,7 @@ def get_tasks():
     except Exception as e:
         return jsonify({"message": "There was an error " + str(e) + "!"}), 500
 
-@app.route('/create_task', methods=['POST'])
+@app.route('/api/create_task', methods=['POST'])
 def create_task():
     title = request.json.get('title')
     content = request.json.get('content')
@@ -35,7 +35,7 @@ def create_task():
     
     return jsonify({"message": "New task created successfully!"}), 201
 
-@app.route('/delete_task/<int:task_id>', methods=['DELETE'])
+@app.route('/api/delete_task/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
     task = Task.query.get(task_id)
     
@@ -47,9 +47,28 @@ def delete_task(task_id):
     
     return jsonify({"message": "The task was deleted successfully!"}), 200
 
-@app.route('/edit_task/<int:task_id>', methods=['PATCH'])
+@app.route('/api/edit_task/<int:task_id>', methods=['PATCH'])
 def edit_task(task_id):
-    return NotImplementedError
+    task = Task.query.get(task_id)
+    
+    if not task:
+        return jsonify({"message": "There was no task found!"}), 404
+    
+    task.title = request.json.get("title", task.title)
+    task.content = request.json.get("content", task.content)
+    task.priority_level = request.json.get("priorityLevel", task.priority_level)
+    
+    # Convert string representation of end_time to datetime object
+    end_time_str = request.json.get('endTime')
+    if end_time_str:
+        task.end_time = datetime.strptime(end_time_str, '%Y-%m-%d %H:%M:%S')
+    
+    try:
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message": "There was an error" + str(e) + "!"}), 400
+    
+    return jsonify({"message": "The task was edited successfully!"}), 200
 
 if __name__ == '__main__':
     with app.app_context():
