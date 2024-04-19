@@ -7,6 +7,8 @@ class Task(db.Model):
     start_time = db.Column(db.DateTime, unique=False)
     end_time = db.Column(db.DateTime, unique=False)
     priority_level = db.Column(db.Integer, unique=False)
+    is_done = db.Column(db.Boolean, unique=False)
+    last_updated = db.Column(db.DateTime, unique=False)
     
     def to_json(self):
         return {
@@ -15,5 +17,7 @@ class Task(db.Model):
             'content': self.content,
             'startTime': self.start_time,
             'endTime': self.end_time,
-            'priorityLevel': self.priority_level
+            'priorityLevel': self.priority_level,
+            'isDone': self.is_done,
+            'lastUpdated': self.last_updated
         }
