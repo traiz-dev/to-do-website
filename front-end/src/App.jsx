@@ -31,7 +31,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/tasks" element={<TaskCard tasks={tasks}/>} />
+        <Route path="/tasks" element={<TaskCard tasks={tasks} setTasks={setTasks}/>} />
         <Route path="/organiser" element={<Organiser/>} />
       </Routes>
     </BrowserRouter>
