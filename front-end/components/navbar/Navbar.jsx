@@ -6,7 +6,7 @@ const Navbar = () => {
       <a href='/' className="absolute uppercase font-bold text-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-blue-800 inline-block text-transparent bg-clip-text">
         TaskMaster
       </a>
-      <li className="flex justify-center gap-20 tracking-widest font-light text-gray-600">
+      <li className="flex justify-center gap-[120px] tracking-widest font-light text-gray-600">
         <ul>
           <a href="/" className="hover:text-gray-400 duration-200">
             Home
