@@ -85,7 +85,7 @@ const TaskCard = ({ tasks, setTasks }) => {
         {tasks.map((task) => {
           const lastUpdatedISO = new Date(task.lastUpdated).toISOString();
           const lastUpdatedDate = new Date(lastUpdatedISO);
-          const day = lastUpdatedDate.getDate();
+          const day = lastUpdatedDate.getDate() -1 ;
           const month = lastUpdatedDate.toLocaleString("default", {
             month: "short",
           });
@@ -93,7 +93,11 @@ const TaskCard = ({ tasks, setTasks }) => {
           const weekday = lastUpdatedDate.toLocaleDateString("en-US", {
             weekday: "short",
           });
-          const formattedDate = `${weekday}, ${day} ${month.toUpperCase()} ${year}`;
+          const formattedDate = `${weekday}, ${day} ${month
+            .toUpperCase()
+            .slice(0, 3)} ${year}`;
+
+            
 
           let svgIcon;
 
@@ -123,7 +127,8 @@ const TaskCard = ({ tasks, setTasks }) => {
             >
               <p className="absolute top-5 left-5">{svgIcon}</p>
               <div className="flex justify-center font-bold text-xl text-gray-800 pb-2 mr-3">
-                {task.isDone ? <BiTask/> : <BiTaskX/>}
+                {/* {task.isDone ? <BiTask /> : <BiTaskX />} */}
+                {task.isDone ? <p className="text-green-500 uppercase">done</p> : <p className="text-red-500 uppercase"> not done</p>}
               </div>
               <h3 className="text-base font-semibold text-gray-900 text-nowrap overflow-hidden overflow-ellipsis">
                 {task.title}
@@ -135,14 +140,14 @@ const TaskCard = ({ tasks, setTasks }) => {
                 <button
                   className={`relative flex justify-center w-full py-2 px-8 text-black text-base font-bold nded-full overflow-hidden bg-white rounded-full transition-all duration-400 ease-in-out shadow-md hover:scale-105 hover:text-white hover:shadow-lg active:scale-90 before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r ${
                     task.isDone
-                      ? "before:from-red-600"
-                      : "before:from-green-600"
+                      ? "before:from-green-600"
+                      : "before:from-red-600"
                   } ${
-                    task.isDone ? "before:to-red-400" : "before:to-green-400"
+                    task.isDone ? "before:to-green-400" : "before:to-red-400"
                   } before:transition-all before:duration-800 before:ease-in-out before:z-[-1] before:rounded-full hover:before:left-0`}
                   onClick={() => updateIsDone(task.id)}
                 >
-                  {task.isDone ? <MdOutlineRemoveDone /> : <MdOutlineDoneAll />}
+                  {task.isDone ? <MdOutlineDoneAll /> : <MdOutlineRemoveDone />}
                 </button>
               </div>
               <div className="flex gap-2 text-sm text-gray-500 border-b pb-2">
