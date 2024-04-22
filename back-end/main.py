@@ -103,25 +103,6 @@ def update_task(task_id):
         return jsonify({"message": "Task updated successfully!"}), 200
     except Exception as e:
         return jsonify({"message": "There was an error while performing update " + str(e) + "!"}), 400
-
-def sorting_key(task):
-    # Priority level is given higher weightage, followed by start time
-    return (task.priority_level, task.start_time)
-
-@app.route('/api/sort_tasks', methods=['GET'])
-def get_sorted_tasks():
-    try:
-        tasks = Task.query.all()
-        sorted_tasks = sorted(tasks, key=sorting_key)
-        tasks_json = [task.to_json() for task in sorted_tasks]
-        
-        if not tasks:
-            return jsonify({"message": "No tasks found!"}), 404
-        
-        return jsonify({"tasks": tasks_json}), 200
-    except Exception as e:
-        return jsonify({"message": "There was an error " + str(e) + "!"}), 500
-
     
 if __name__ == '__main__':
     with app.app_context():
