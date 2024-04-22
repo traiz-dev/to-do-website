@@ -21,10 +21,11 @@ def create_task():
     title = request.json.get('title')
     content = request.json.get('content')
     priority_level = request.json.get('priorityLevel')
+    start_time_str = request.json.get('startTime')
     end_time_str = request.json.get('endTime')
     
     end_time = datetime.strptime(end_time_str, "%Y-%m-%d %H:%M:%S")
-    start_time = datetime.now()
+    start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S")
     last_updated = datetime.now()
     
     new_task = Task(
@@ -102,6 +103,25 @@ def update_task(task_id):
         return jsonify({"message": "Task updated successfully!"}), 200
     except Exception as e:
         return jsonify({"message": "There was an error while performing update " + str(e) + "!"}), 400
+
+def sorting_key(task):
+    # Priority level is given higher weightage, followed by start time
+    return (task.priority_level, task.start_time)
+
+@app.route('/api/sort_tasks', methods=['GET'])
+def get_sorted_tasks():
+    try:
+        tasks = Task.query.all()
+        sorted_tasks = sorted(tasks, key=sorting_key)
+        tasks_json = [task.to_json() for task in sorted_tasks]
+        
+        if not tasks:
+            return jsonify({"message": "No tasks found!"}), 404
+        
+        return jsonify({"tasks": tasks_json}), 200
+    except Exception as e:
+        return jsonify({"message": "There was an error " + str(e) + "!"}), 500
+
     
 if __name__ == '__main__':
     with app.app_context():

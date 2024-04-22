@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { FaExclamation } from "react-icons/fa6";
 import { MdOutlineRemoveDone } from "react-icons/md";
 import { MdOutlineDoneAll } from "react-icons/md";
+import { BiTask } from "react-icons/bi";
+import { BiTaskX } from "react-icons/bi";
 import { URL } from "/utils/consts";
 
 const TaskCard = ({ tasks, setTasks }) => {
@@ -120,16 +122,16 @@ const TaskCard = ({ tasks, setTasks }) => {
               className="relative bg-white w-80 h-60 rounded-md py-4 px-6 border hover:bg-gray-200 duration-500"
             >
               <p className="absolute top-5 left-5">{svgIcon}</p>
-              <h3 className="text-center font-bold text-xl text-gray-800 pb-2 mr-3">
-                {task.isDone ? "DONE" : "NOT DONE"}
-              </h3>
+              <div className="flex justify-center font-bold text-xl text-gray-800 pb-2 mr-3">
+                {task.isDone ? <BiTask/> : <BiTaskX/>}
+              </div>
               <h3 className="text-base font-semibold text-gray-900 text-nowrap overflow-hidden overflow-ellipsis">
                 {task.title}
               </h3>
               <p className="text-xs text-gray-500 pb-4 text-nowrap overflow-hidden overflow-ellipsis">
                 {task.content}
               </p>
-              <div className="flex justify-center pb-2">
+              <div className="flex justify-center pb-5">
                 <button
                   className={`relative flex justify-center w-full py-2 px-8 text-black text-base font-bold nded-full overflow-hidden bg-white rounded-full transition-all duration-400 ease-in-out shadow-md hover:scale-105 hover:text-white hover:shadow-lg active:scale-90 before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r ${
                     task.isDone
