@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { FiX } from "react-icons/fi";
 import { URL } from "/utils/consts";
+import { toast, Toaster } from 'react-hot-toast'
 
 const Modal = ({ isModalOpen, onClose }) => {
   const [title, setTitle] = useState("")
@@ -10,10 +11,21 @@ const Modal = ({ isModalOpen, onClose }) => {
   const [priority, setPriority] = useState(0)
 
   const onSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       const formattedStartDate = startDate.replace("T", " ") + ":00";
       const formattedEndDate = endDate.replace("T", " ") + ":00";
+
+      if (
+        title.length === 0 ||
+        startDate.length === 0 ||
+        endDate.length === 0 ||
+        description.length === 0 ||
+        priority === 0
+      ) {
+        toast.error("You need to fill in all input fields!");
+        return;
+      }
 
       const response = await fetch(URL + "/api/create_task", {
         method: "POST",
@@ -30,10 +42,16 @@ const Modal = ({ isModalOpen, onClose }) => {
       });
 
       if (!response.ok) {
-        console.log("There was an error with a response!");
+        toast.error("There was an error with a server response!");
       }
 
-      console.log("Data submitted successfully!");
+      setTimeout(() => {
+        toast.success("Task created successfully!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      }, 500);
+
     } catch(error) {
       console.error("There was an error! " + error.message)
     }
@@ -41,13 +59,14 @@ const Modal = ({ isModalOpen, onClose }) => {
 
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} />
       {isModalOpen && (
         <>
           <div className="fixed left-0 top-0 z-50 w-full h-full bg-black bg-opacity-70 flex items-center justify-center">
-            <div className="absolute left-[32%] top-[2%] z-20">
+            <div className="absolute left-[31%] top-[2%] z-20">
               <button
                 onClick={onClose}
-                className="absolute top-[125px] right-6 text-white font-bold hover:text-gray-600 transition-all duration-150"
+                className="absolute top-[107px] right-6 text-white font-bold hover:text-gray-600 transition-all duration-150"
               >
                 <FiX />
               </button>
@@ -63,11 +82,11 @@ const Modal = ({ isModalOpen, onClose }) => {
                     <input
                       type="text"
                       className="bg-gray-700 text-gray-200 border-0 rounded-md p-2 mb-4 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 w-full md:w-[100%] mr-[2%]"
-                      placeholder="Title"
+                      placeholder="Name"
                       onChange={(e) => setTitle(e.target.value)}
                     />
                     <h2 className="text-l uppercase font-bold text-gray-200 mb-4 w-full">
-                      Start date and time.
+                      Start date and time
                     </h2>
                     <input
                       type="datetime-local"
@@ -76,7 +95,7 @@ const Modal = ({ isModalOpen, onClose }) => {
                       onChange={(e) => setStartDate(e.target.value)}
                     />
                     <h2 className="text-l uppercase font-bold text-gray-200 mb-4 w-full">
-                      End date and time.
+                      End date and time
                     </h2>
                     <input
                       type="datetime-local"
@@ -84,6 +103,9 @@ const Modal = ({ isModalOpen, onClose }) => {
                       placeholder="End Date and Time"
                       onChange={(e) => setEndDate(e.target.value)}
                     />
+                    <h2 className="text-l uppercase font-bold text-gray-200 mb-4 w-full">
+                      Priority
+                    </h2>
                     <select
                       id="prio"
                       className="w-full mr-2 mb-4"
@@ -105,6 +127,7 @@ const Modal = ({ isModalOpen, onClose }) => {
                     ></textarea>
 
                     <button
+                      type="submit"
                       onClick={onSubmit}
                       className="uppercase w-full bg-gradient-to-r  from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 hover:to-blue-600 transition duration-150"
                     >
