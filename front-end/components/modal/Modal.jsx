@@ -66,9 +66,9 @@ const Modal = ({ isModalOpen, onClose }) => {
             <div className="absolute left-[31%] top-[2%] z-20">
               <button
                 onClick={onClose}
-                className="absolute top-[107px] right-6 text-white font-bold hover:text-gray-600 transition-all duration-150"
+                className="absolute top-[90px] right-6 text-white font-bold hover:text-gray-600 transition-all duration-150"
               >
-                <FiX />
+                <FiX size={22}/>
               </button>
               <div className="flex flex-col items-center justify-center h-screen dark">
                 <div className="w-full max-w-xl bg-gray-800 rounded-lg shadow-md p-6">
@@ -108,7 +108,7 @@ const Modal = ({ isModalOpen, onClose }) => {
                     </h2>
                     <select
                       id="prio"
-                      className="w-full mr-2 mb-4"
+                      className="w-full mr-2 mb-4 rounded-md bg-blue-300 uppercase p-2 font-bold"
                       onChange={(e) => setPriority(e.target.value)}
                     >
                       <option value="select">Select</option>
