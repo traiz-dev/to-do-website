@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { FaExclamation } from "react-icons/fa6";
 import { MdOutlineRemoveDone } from "react-icons/md";
 import { MdOutlineDoneAll } from "react-icons/md";
-import { BiTask } from "react-icons/bi";
-import { BiTaskX } from "react-icons/bi";
 import { URL } from "/utils/consts";
 import toast, { Toaster } from "react-hot-toast";
 
